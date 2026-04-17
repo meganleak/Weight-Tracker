@@ -70,7 +70,6 @@
   }
 
   .day-body { display: none; padding: 16px; }
-
   .day-card.open .day-body { display: block; }
 
   .ex-weight {
@@ -114,7 +113,8 @@
   <div class="day-header" onclick="toggle(this)">Chest + Triceps</div>
   <div class="day-body">
     Flat DB Bench — <span class="ex-weight" contenteditable="true">65–70 lb</span><br/>
-    Incline DB Press — <span class="ex-weight" contenteditable="true">50–55 lb</span>
+    Incline DB Press — <span class="ex-weight" contenteditable="true">50–55 lb</span><br/>
+    Cable Fly — <span class="ex-weight" contenteditable="true">Moderate</span>
   </div>
 </div>
 
@@ -123,11 +123,42 @@
   <div class="day-header" onclick="toggle(this)">Back + Biceps</div>
   <div class="day-body">
     Pull-ups — <span class="ex-weight" contenteditable="true">15 lb assist</span><br/>
-    Lat Pulldown — <span class="ex-weight" contenteditable="true">100–110 lb</span>
+    Lat Pulldown — <span class="ex-weight" contenteditable="true">100–110 lb</span><br/>
+    Cable Row — <span class="ex-weight" contenteditable="true">110–120 lb</span>
   </div>
 </div>
 
-<!-- BODYWEIGHT TRACKER -->
+<!-- DAY 3 -->
+<div class="day-card">
+  <div class="day-header" onclick="toggle(this)">Legs</div>
+  <div class="day-body">
+    Squat — <span class="ex-weight" contenteditable="true">Heavy</span><br/>
+    RDL — <span class="ex-weight" contenteditable="true">115–135 lb</span><br/>
+    Leg Press — <span class="ex-weight" contenteditable="true">Moderate–Heavy</span>
+  </div>
+</div>
+
+<!-- DAY 4 -->
+<div class="day-card">
+  <div class="day-header" onclick="toggle(this)">Shoulders</div>
+  <div class="day-body">
+    DB Press — <span class="ex-weight" contenteditable="true">40–55 lb</span><br/>
+    Lateral Raise — <span class="ex-weight" contenteditable="true">15–20 lb</span><br/>
+    Rear Delt Fly — <span class="ex-weight" contenteditable="true">Moderate</span>
+  </div>
+</div>
+
+<!-- DAY 5 -->
+<div class="day-card">
+  <div class="day-header" onclick="toggle(this)">Arms</div>
+  <div class="day-body">
+    EZ Curl — <span class="ex-weight" contenteditable="true">60–70 lb</span><br/>
+    Close Grip Bench — <span class="ex-weight" contenteditable="true">95–105 lb</span><br/>
+    Hammer Curl — <span class="ex-weight" contenteditable="true">25–30 lb</span>
+  </div>
+</div>
+
+<!-- BODYWEIGHT TRACKER (NEW) -->
 <div class="week-schedule">
   <div class="section-label">Bodyweight Tracker</div>
 
@@ -151,37 +182,30 @@ function toggle(el) {
   el.parentElement.classList.toggle("open");
 }
 
-// Save workout weights
-document.querySelectorAll('.ex-weight').forEach(el => {
-  el.addEventListener('input', () => {
-    localStorage.setItem('weights', document.body.innerHTML);
-  });
-});
-
-// Bodyweight tracker
-const WEIGHT_KEY = 'bodyweight_log_v1';
+// Weight tracker
+const WEIGHT_KEY = "bodyweight_log_v1";
 
 function addWeight() {
-  const input = document.getElementById('weightInput');
-  const weight = input.value.trim();
-  if (!weight) return;
+  const input = document.getElementById("weightInput");
+  const value = input.value.trim();
+  if (!value) return;
 
-  const data = JSON.parse(localStorage.getItem(WEIGHT_KEY) || '[]');
+  const data = JSON.parse(localStorage.getItem(WEIGHT_KEY) || "[]");
 
   data.unshift({
     date: new Date().toLocaleDateString(),
-    weight
+    weight: value
   });
 
   localStorage.setItem(WEIGHT_KEY, JSON.stringify(data));
 
-  input.value = '';
+  input.value = "";
   loadWeights();
 }
 
 function loadWeights() {
-  const list = document.getElementById('weightList');
-  const data = JSON.parse(localStorage.getItem(WEIGHT_KEY) || '[]');
+  const list = document.getElementById("weightList");
+  const data = JSON.parse(localStorage.getItem(WEIGHT_KEY) || "[]");
 
   list.innerHTML = data.length
     ? data.map(e => `${e.date} — <strong style="color:var(--accent)">${e.weight} lb</strong>`).join("<br>")
