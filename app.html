@@ -436,5 +436,76 @@
 
   loadWeights();
 </script>
+  // =====================
+
+// BODYWEIGHT TRACKER
+
+// =====================
+
+const BW_KEY = "bodyweight_history_v1";
+
+function getBWData() {
+
+  return JSON.parse(localStorage.getItem(BW_KEY) || "[]");
+
+}
+
+function saveBWData(data) {
+
+  localStorage.setItem(BW_KEY, JSON.stringify(data));
+
+}
+
+function renderBW() {
+
+  const list = document.getElementById("bwList");
+
+  if (!list) return;
+
+  const data = getBWData();
+
+  list.innerHTML = "";
+
+  data.slice().reverse().forEach(entry => {
+
+    const li = document.createElement("li");
+
+    li.textContent = `${entry.date} — ${entry.weight} lb`;
+
+    list.appendChild(li);
+
+  });
+
+}
+
+function addWeight() {
+
+  const input = document.getElementById("bwInput");
+
+  const value = input.value.trim();
+
+  if (!value) return;
+
+  const data = getBWData();
+
+  data.push({
+
+    weight: value,
+
+    date: new Date().toLocaleDateString()
+
+  });
+
+  saveBWData(data);
+
+  input.value = "";
+
+  renderBW();
+
+}
+
+// initial load
+
+renderBW();
 </body>
 </html>
